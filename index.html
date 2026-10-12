@@ -19,6 +19,9 @@
   .updated { color:var(--dim); font-style:italic; }
   .short { border:1px solid #5a4230; border-radius:12px; padding:18px 22px; background:rgba(0,0,0,.18); }
   .short p { color:var(--cream); margin:0; }
+  blockquote.note { border-left:3px solid var(--amber); margin:1.4em 0; padding:2px 0 2px 18px; color:var(--dim); }
+  blockquote.note p { color:var(--dim); }
+  code, a { color:var(--cream); }
   footer { margin-top:56px; text-align:center; color:var(--dim); }
 </style>
 </head>
@@ -26,14 +29,28 @@
 <div class="wrap">
   <h1>Dinner Truce</h1>
   <div class="rule"><span></span></div>
-  <p class="updated">Privacy Policy &middot; Last updated: September 21, 2026</p>
+  <p class="updated">Privacy Policy &middot; Last updated: October 10, 2026</p>
 
   <div class="short">
-    <p><strong>The short version:</strong> Dinner Truce has no accounts, no analytics,
-    and no tracking. Your recipes and decisions are stored only on your phone. The
-    only times anything leaves your phone are when you deliberately share or export
-    something &mdash; or if you choose to watch an optional rewarded ad (see Ads below).</p>
+    <p><strong>The short version:</strong> Dinner Truce has no accounts, no
+    analytics, and no tracking of its own. Your recipes and decisions are stored
+    only on your phone. Nothing you type, save, or photograph is sent anywhere by
+    the app on its own. The exceptions are listed in full below: the ad and AI
+    features you can switch on, the recipe photographs the app loads so it can
+    show you pictures of dishes, and anything you deliberately share or export.</p>
   </div>
+
+  <blockquote class="note">
+    <p><strong>Corrected 2026-09-29.</strong> This paragraph previously said
+    "the only time anything leaves your phone is when you deliberately share or
+    export it &mdash; or when you choose to watch an optional ad". That was
+    <strong>not true</strong>: the app loads recipe photographs from TheMealDB
+    and Wikimedia to draw the cards, so an ordinary session makes third-party
+    image requests. Those requests carry your IP address and the fact that you
+    are looking at that recipe &mdash; never anything you typed. See "Recipe
+    photographs" below. A policy that overstates its privacy is worse than one
+    that names the trade-off.</p>
+  </blockquote>
 
   <h2>What we collect</h2>
   <p>Nothing. Dinner Truce has no servers and no accounts, and we receive no data
@@ -43,61 +60,168 @@
   <ul>
     <li>Your recipe library, favourites, decision history, shopping lists, and
     collections &mdash; stored locally in the app's private storage.</li>
-    <li>Android's optional device backup may copy app data to your Google account's
-    backup, per your device settings. The built-in recipe catalog is excluded from
-    platform backup by design; exports are always a deliberate, confirmed action by you.</li>
-    <li>One-tap export creates a JSON file &mdash; you choose where it goes.</li>
+    <li>Android platform backup and device transfer are configured to exclude the
+    app database, shared preferences, and Preferences DataStore, including the
+    bundled catalog state and user preferences. <strong>Recipe photos you attach
+    are excluded too</strong> &mdash; they live in the app's private storage and
+    are not copied to Google's servers or to a new phone. Exports are always a
+    deliberate, confirmed action by you.</li>
+    <li>One-tap export creates a JSON file &mdash; you choose where it goes. It
+    carries your catalog and cooking history plus everything you built in the
+    app: collections, the 7-day plan, your curated ingredient vocabulary, your
+    correction queue, this device's activity trail, and your standing kitchen
+    rules (including allergens) and what the picker has learned. <strong>Your
+    OpenRouter API key is deliberately not in it</strong> &mdash; that is a
+    credential, and a file you may email should never carry one. An unfinished
+    pick session is not in it either. Nothing is uploaded anywhere by the export
+    itself; the file goes exactly where you send it.</li>
   </ul>
 
-  <h2>When data leaves your phone (only because you chose it)</h2>
+  <h2>When data leaves your phone</h2>
   <ul>
-    <li><strong>Sharing a recipe or collection</strong> uses the Android share sheet:
-    it sends exactly what you selected to the destination you picked.</li>
-    <li><strong>Voice recipe entry</strong> uses Android's built-in speech recognition.
-    Audio is handled by Android's speech service under its own terms; the app itself
-    works only with the recognized text.</li>
-    <li><strong>Importing recipes from links or photos</strong> &mdash; the app fetches
-    only the content you ask it to import.</li>
-    <li><strong>Optional AI features (off by default)</strong> &mdash; if you enable AI
-    autofill in Settings, the recipe text you submit is sent to the configured AI
-    service to draft a structured entry, and the result is clearly labeled. Turning
-    the switch off stops this.</li>
+    <li><strong>Sharing a recipe or collection</strong> uses the Android share
+    sheet: it sends exactly what you selected to the destination you picked.</li>
+    <li><strong>Recipe photographs</strong> &mdash; most catalog recipes carry a
+    picture hosted by TheMealDB or Wikimedia, and the app downloads that picture
+    when it draws the card, so it can show you what the dish looks like. That
+    request goes to TheMealDB or Wikimedia, not to us, and it necessarily
+    reveals your IP address and that you are browsing that recipe. It does
+    <strong>not</strong> include your recipe library, your history, or anything
+    you typed. Photos <strong>you</strong> attach are different: those never
+    leave your phone (see above).</li>
+    <li><strong>Voice recipe entry</strong> uses Android's built-in speech
+    recognition. Audio is handled by Android's speech service under its own
+    terms; the app itself works only with the recognized text.</li>
+    <li><strong>Photo recipe entry</strong> reads the photo on your device. Text
+    recognition runs on the phone; the image is not uploaded. The first time you
+    use it, Android may download the small text-recognition model from Google
+    &mdash; that is a model, not your photo.</li>
+    <li><strong>Optional AI features (off by default)</strong> &mdash; if you
+    enable AI autofill in Settings, the recipe text you submit is sent to the
+    configured AI service (today: OpenRouter, openrouter.ai) to draft a
+    structured entry, and the result is clearly labeled. The heading at the top
+    of every intake screen says so; when the feature is on you see it named, and
+    when it's off nothing goes anywhere. Turning the switch off stops this.
+    Only the ingredients and instructions text are sent &mdash; never your
+    photos, your history, or what the picker has learned.</li>
+    <li><strong>"Ask Mallet" (optional, user-initiated)</strong> &mdash; if you
+    tap it, the app assembles a plain-text handoff: the recipe you are looking
+    at, an aggregate taste summary (what this kitchen picks &mdash; counts and
+    tendencies only, never names, dates, or your dinner history), and the
+    question you typed. It goes through the Android share sheet to the app
+    <strong>you</strong> pick (for example Muse, by Meta) &mdash; exactly the
+    text the preview shows before you tap Share, and nothing else. There is no
+    API, no account and no server: nothing is sent unless you tap Share, and
+    Muse does not need to be installed for the feature to work. A Chatty/Quiet
+    switch in Settings hides the feature entirely.</li>
+    <li><strong>Android platform backup</strong> is configured to exclude
+    everything this app stores, so the platform does not copy it to your Google
+    account. This is narrower than "backup is switched off", and it is the
+    accurate description.</li>
   </ul>
+
+  <blockquote class="note">
+    <p><strong>Corrected 2026-09-29.</strong> The bullets above previously opened
+    with "only because you chose it" and listed "importing recipes from links or
+    photos". The app has <strong>never</strong> fetched a recipe from a pasted
+    link &mdash; pasting a URL is treated as text to type, and a URL is
+    explicitly stripped so it can never become a recipe name. Advertising a
+    capability the app does not have is the same kind of error as hiding one it
+    does.</p>
+  </blockquote>
+
+  <h2>Recipe data and allergen checks</h2>
+  <p>Recipes in this catalog come from public sources &mdash; the provenance
+  badge on each one names them, and "verified" means the kitchen could check.
+  The <strong>allergen flags on each recipe are inferred automatically</strong>
+  by a word check on your phone running against the ingredient list. That check
+  is deliberately simple and can <strong>miss things, and can over-flag</strong>:
+  a word list sees the word "tortilla" and cannot know it is corn, not wheat,
+  and it cannot know what is inside a jarred or composite product. When you set
+  allergens in Settings, recipes that trip your rules are kept off the table
+  <em>before</em> a pick is offered, but that is a filter, not a guarantee
+  &mdash; and the auto-check that powers it can still be wrong.</p>
+  <p><strong>Always check the ingredients yourself if you have a food
+  allergy.</strong> Allergen information here is not medical advice. Your
+  allergen rules are stored locally, excluded from Android's platform backup,
+  are not part of the "Ask Mallet" share text, and travel only in an export you
+  deliberately create.</p>
 
   <h2>Ads (optional bonus rounds only)</h2>
-  <p>The app shows <strong>no banners, no interstitials, and nothing between you and
-  the core picker</strong>. The only ads are <strong>rewarded ads you explicitly choose
-  to watch</strong> to unlock two optional bonus rounds after the free first round
-  &mdash; and only when you tap &ldquo;watch a short ad&rdquo;. If an ad can't load
-  (for example offline), the bonus round unlocks free.</p>
-  <p>Rewarded ads are served by <strong>Google AdMob</strong>, which receives your
-  device's advertising ID and ad-interaction data, and may show a consent form (in
-  regions that require one) before any ad is requested. Google's own privacy policy
-  governs that data: <a href="https://policies.google.com/technologies/ads"
-  style="color:var(--cream)">policies.google.com/technologies/ads</a>.</p>
-  <p>Everything else &mdash; your recipes, history, and the taste preferences the picker
-  learns from your own ratings &mdash; stays on your phone and is never part of any
-  ad request.</p>
+  <p>The app shows <strong>no banners, no interstitials, and nothing between you
+  and the core picker</strong>. The only ads are <strong>rewarded ads</strong>,
+  and an ad is only ever shown after you tap a button that says so &mdash; one
+  of: "watch a short ad" on a bonus round, "One more round &middot; watch a
+  short ad" when the kitchen closes with no alternatives left, or the optional
+  embellished share card. The Decider, the first round, the reset, plain sharing
+  and export are never ad-gated. If an ad can't load (for example offline), the
+  action falls back to the free path.</p>
+  <p>Rewarded ads are served by <strong>Google AdMob</strong>, which receives
+  your device's <strong>advertising ID</strong>,
+  <strong>ad-interaction data</strong> (which ads were shown, tapped, or watched
+  to completion), an <strong>approximate location</strong> (city-level, derived
+  by Google from your network &mdash; never your precise position), and may use
+  the Android <strong>Topics API</strong>, which groups the apps you use into
+  on-device interest categories so ads can be less random. It may also show a
+  consent form (in regions that require one) before any ad is requested.
+  Google's own privacy policy governs that data:
+  <a href="https://policies.google.com/technologies/ads">policies.google.com/technologies/ads</a>.</p>
+  <p>Everything else &mdash; your recipes, history, and the taste preferences the
+  picker learns from your own ratings &mdash; stays on your phone and is never
+  part of any ad request.</p>
+
+  <blockquote class="note">
+    <p><strong>Corrected 2026-10-06</strong> &mdash; the four data types above
+    are now named individually because the Play Data Safety form must declare
+    them and this policy has to agree with it: advertising ID, ad interactions,
+    approximate location, and Topics/interest signals are <strong>collected and
+    shared for advertising</strong> by the ad SDK, and nothing else is. The
+    owner can switch the ad setup to contextual-only (which ends the Topics use)
+    at any time; if that happens this section and the form change together.</p>
+  </blockquote>
+
+  <blockquote class="note">
+    <p><strong>Corrected 2026-09-29 &mdash; two things this section did not
+    say.</strong> It previously described ads purely in tap terms, which hid the
+    fact that the app warms up the ad SDK at launch, so an ad request carrying
+    your advertising ID can happen at app start before you tap anything. It
+    also listed only "two optional bonus rounds after the free first round",
+    omitting the "One more round" slot that appears when the kitchen closes. No
+    ad is ever <em>shown</em> without your tap; the request is not a tap, and
+    the disclosure now says so.</p>
+  </blockquote>
 
   <h2>Permissions</h2>
   <ul>
     <li><strong>Microphone</strong> &mdash; only while you dictate a recipe.</li>
-    <li><strong>Notifications</strong> &mdash; only for the optional dinner reminder you set.</li>
-    <li><strong>Internet</strong> &mdash; for imports you request, for the optional rewarded
-    ads (Google AdMob), and if you enable it, AI autofill.</li>
+    <li><strong>Notifications</strong> &mdash; only for the optional dinner
+    reminder you set.</li>
+    <li><strong>Internet</strong> &mdash; to load the recipe photographs
+    described above, for the optional rewarded ads (Google AdMob), and if you
+    enable it, AI autofill.</li>
+    <li><strong>Advertising ID</strong> &mdash; declared by Google's ad SDK so
+    rewarded ads can be measured and so you can be shown a consent form where
+    one is required. It is only ever used for that; if you decline ads it is not
+    used.</li>
   </ul>
+  <p>The release build also carries a small number of permissions added by
+  Google libraries rather than by this app (<code>ACCESS_NETWORK_STATE</code>
+  for ad and reminder scheduling, <code>RECEIVE_BOOT_COMPLETED</code> and
+  <code>WAKE_LOCK</code> so a reminder you opted into still fires after a
+  reboot, and the ad-services ID permissions). None of them can read your
+  recipes.</p>
 
   <h2>Children</h2>
   <p>Dinner Truce is not directed at children under 13.</p>
 
   <h2>Changes</h2>
-  <p>If a future feature changes what data is processed &mdash; for example new optional
-  services &mdash; we will update this page and the store listing before that version
-  ships.</p>
+  <p>If a future feature changes what data is processed &mdash; for example new
+  optional services &mdash; we will update this page and the store listing
+  before that version ships.</p>
 
   <h2>Contact</h2>
-  <p>Use the contact email shown on the Dinner Truce Google Play listing &mdash; it is
-  the only address we monitor, and the listing is required to keep it current.</p>
+  <p>Email us at <strong>medinaluis85@gmail.com</strong> &mdash; it is the only
+  address we monitor.</p>
 
   <footer>Dinner, decided. The debate ends here.</footer>
 </div>
